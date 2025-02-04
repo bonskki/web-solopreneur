@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.2.1",
-    "astro": "^5.2.3"
+    "@libsql/kysely-libsql": "^0.4.1",
+    "astro": "^5.2.3",
+    "better-auth": "^1.1.15"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250129.0",

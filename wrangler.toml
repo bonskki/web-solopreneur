@@ -1,0 +1,28 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "web-solopreneur"
+compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2025-01-29"
+pages_build_output_dir = "./dist"
+
+[observability]
+enabled = true
+
+######## PRODUCTION environment config ########
+
+# Production environment variables
+[vars]
+BETTER_AUTH_SECRET="dIgBiBWMXjPWTq9vNBJssbHJSPjVqsTR"
+BETTER_AUTH_URL="http://localhost:3000"
+TURNSTILE_SECRET=""
+TURSO_AUTH_TOKEN=""
+TURSO_DATABASE_URL=""
+
+######## PREVIEW environment config ########
+
+# Preview environment variables
+[env.preview.vars]
+BETTER_AUTH_SECRET="dIgBiBWMXjPWTq9vNBJssbHJSPjVqsTR"
+BETTER_AUTH_URL="http://localhost:3000"
+TURNSTILE_SECRET=""
+TURSO_AUTH_TOKEN=""
+TURSO_DATABASE_URL=""
