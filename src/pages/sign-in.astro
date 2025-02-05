@@ -1,0 +1,90 @@
+---
+// src/pages/signin.astro
+export const prerender = false;
+---
+
+<div class='signin-form'>
+    <input type='email' id='email' placeholder='Email' />
+    <input type='password' id='password' placeholder='Password' />
+    <button id='signinButton'>Sign In</button>
+    <a href='/sign-up' class='signup-link'>Don't have an account? Sign up</a>
+</div>
+
+<script>
+    import { authClient } from "../lib/auth-client";
+
+    const emailInput = document.getElementById("email") as HTMLInputElement;
+    const passwordInput = document.getElementById(
+        "password",
+    ) as HTMLInputElement;
+    const signinButton = document.getElementById(
+        "signinButton",
+    ) as HTMLButtonElement;
+
+    signinButton?.addEventListener("click", async () => {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        try {
+            const { data, error } = await authClient.signIn.email(
+                {
+                    email,
+                    password,
+                },
+                {
+                    onRequest: (ctx) => {
+                        signinButton.disabled = true;
+                    },
+                    onSuccess: (ctx) => {
+                        window.location.href = "/profile";
+                    },
+                    onError: (ctx) => {
+                        alert(ctx.error.message);
+                    },
+                },
+            );
+        } catch (error) {
+            console.error("Signin error:", error);
+            alert("An error occurred during sign in");
+        } finally {
+            signinButton.disabled = false;
+        }
+    });
+</script>
+
+<style>
+    .signin-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    input {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+        padding: 0.5rem;
+        background-color: #0070f3;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .signup-link {
+        text-align: center;
+        color: #0070f3;
+        text-decoration: none;
+    }
+</style>

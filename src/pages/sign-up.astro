@@ -1,0 +1,106 @@
+---
+// src/pages/signup.astro
+export const prerender = false;
+---
+
+<div class='signup-form'>
+    <input type='text' id='name' placeholder='Name' />
+    <input type='password' id='password' placeholder='Password' />
+    <input type='email' id='email' placeholder='Email' />
+    <input type='file' id='image' />
+    <button id='signupButton'>Sign Up</button>
+</div>
+
+<script>
+    import { authClient } from "../lib/auth-client";
+
+    // Function to convert image to base64
+    async function convertImageToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
+    // Get DOM elements
+    const nameInput = document.getElementById("name") as HTMLInputElement;
+    const passwordInput = document.getElementById(
+        "password",
+    ) as HTMLInputElement;
+    const emailInput = document.getElementById("email") as HTMLInputElement;
+    const imageInput = document.getElementById("image") as HTMLInputElement;
+    const signupButton = document.getElementById(
+        "signupButton",
+    ) as HTMLButtonElement;
+
+    // Add click event listener
+    signupButton?.addEventListener("click", async () => {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        const name = nameInput.value;
+        const imageFile = imageInput.files?.[0];
+
+        try {
+            const { data, error } = await authClient.signUp.email(
+                {
+                    email,
+                    password,
+                    name,
+                    image: imageFile
+                        ? await convertImageToBase64(imageFile)
+                        : undefined,
+                },
+                {
+                    onRequest: (ctx) => {
+                        // show loading
+                        signupButton.disabled = true;
+                    },
+                    onSuccess: (ctx) => {
+                        window.location.href = "/profile";
+                    },
+                    onError: (ctx) => {
+                        alert(ctx.error.message);
+                    },
+                },
+            );
+        } catch (error) {
+            console.error("Signup error:", error);
+            alert("An error occurred during signup");
+        } finally {
+            signupButton.disabled = false;
+        }
+    });
+</script>
+
+<style>
+    .signup-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    input {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+        padding: 0.5rem;
+        background-color: #0070f3;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+</style>

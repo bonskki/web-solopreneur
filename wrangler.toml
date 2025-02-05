@@ -11,9 +11,9 @@ enabled = true
 
 # Production environment variables
 [vars]
-BETTER_AUTH_SECRET="dIgBiBWMXjPWTq9vNBJssbHJSPjVqsTR"
-BETTER_AUTH_URL="http://localhost:3000"
-TURNSTILE_SECRET=""
+BETTER_AUTH_SECRET=""
+BETTER_AUTH_URL="https://web-solopreneur.pages.dev/"
+#TURNSTILE_SECRET=""
 TURSO_AUTH_TOKEN=""
 TURSO_DATABASE_URL=""
 
@@ -21,8 +21,8 @@ TURSO_DATABASE_URL=""
 
 # Preview environment variables
 [env.preview.vars]
-BETTER_AUTH_SECRET="dIgBiBWMXjPWTq9vNBJssbHJSPjVqsTR"
-BETTER_AUTH_URL="http://localhost:3000"
-TURNSTILE_SECRET=""
+BETTER_AUTH_SECRET=""
+BETTER_AUTH_URL="https://web-solopreneur.pages.dev/"
+#TURNSTILE_SECRET=""
 TURSO_AUTH_TOKEN=""
 TURSO_DATABASE_URL=""

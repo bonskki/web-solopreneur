@@ -1,0 +1,28 @@
+---
+export const prerender = false;
+import Layout from "../layouts/Layout.astro";
+import { auth } from "../../auth";
+const session = await auth.api.getSession({
+    headers: Astro.request.headers,
+});
+---
+
+<Layout>
+    <p>Session: {session?.user?.name}</p>
+    <button id='logoutButton'>Logout</button>
+    <script>
+        import { signOut } from "../lib/auth-client";
+
+        const logoutButton = document.getElementById("logoutButton");
+
+        logoutButton?.addEventListener("click", async () => {
+            try {
+                await signOut();
+                window.location.href = "/sign-in";
+            } catch (error) {
+                console.error("Logout error:", error);
+                alert("Failed to logout");
+            }
+        });
+    </script>
+</Layout>
